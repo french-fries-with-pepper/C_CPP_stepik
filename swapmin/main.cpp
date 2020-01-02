@@ -31,7 +31,7 @@ void print_array2d(int **m, unsigned rows, unsigned cols)
 void swap_min(int *m[], unsigned rows, unsigned cols)
 {
     int minRow = 0;
-    int min = 1 << 32;
+    int min = m[0][0];
 
     for (int i = 0; i < rows; i++)
     {
@@ -43,11 +43,34 @@ void swap_min(int *m[], unsigned rows, unsigned cols)
                 minRow = i;
             }
         }
+
     }
+
+    int * tmpRow[] = {m[0]};
+
+    m[0]=m[minRow];
+    m[minRow] = *tmpRow;
 }
 
 int main()
 {
+    int ** arr1 = create_array2d(3,3);
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            arr1[i][j] = i+j;
+        }
+    }
+
+    arr1[2][2] = -3;
+
+    print_array2d(arr1,3,3);
+    swap_min(arr1,3,3);
+    print_array2d(arr1,3,3);
+
+    
 
     return 0;
 }
