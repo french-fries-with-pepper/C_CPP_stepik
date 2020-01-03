@@ -27,14 +27,15 @@ char *resize(const char *str, unsigned size, unsigned new_size)
 char *getline()
 {
     int chunk = 15;
+    int delta = 15;
     char *res = new char[chunk];
     for (int i = 0;; i++)
     {
         if (i >= chunk)
         {
 
-            res = resize(res, chunk, chunk * 2);
-            chunk *= 2;
+            res = resize(res, chunk, chunk + delta);
+            chunk += delta;
         }
         char current = '\0';
         cin.get(current);
