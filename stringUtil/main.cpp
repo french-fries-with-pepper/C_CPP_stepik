@@ -53,7 +53,7 @@ char *getline()
 struct String
 {
 
-    /* Реализуйте этот конструктор */
+    // constructor #1
     String(const char *str = "")
     {
         size_t s = strlen(str);
@@ -62,6 +62,8 @@ struct String
         strcpy(res, str);
         this->str = res;
     };
+
+    // constructor #2
     String(size_t n, char c)
     {
         this->size = n;
@@ -73,10 +75,36 @@ struct String
         res[n] = '\0';
         this->str = res;
     };
-
+    // destructor
     ~String()
     {
         delete[] this->str;
+    }
+    // copy constructor
+    String(const String &other)
+        : size(other.size), str(new char[size + 1])
+    {
+        for (size_t i = 0; i < size; i++)
+        {
+
+            str[i] = other.str[i];
+        }
+
+        str[size] = '\0';
+    };
+
+    //  '=' constructor
+    String &operator=(const String &other)
+    {
+        if (this != &other)
+        {
+            delete[] str;
+            size = other.size;
+            str = new char[size + 1];
+            strcpy(str, other.str);
+            str[size] = '\0';
+        }
+        return *this;
     }
 
     void append(String &other)
@@ -102,14 +130,11 @@ int main()
 {
 
     char *str1 = getline();
-    char *str2 = getline();
-
+    String w = "world";
     String s1(str1);
-    String s2(str2);
-
-    s1.append(s2);
-
-    s1.append(s1);
+    String s2 = s1;
+    s2.append(w);
+    s1 = s2;
 
     //s1.append(s1);
 
