@@ -63,13 +63,27 @@ private:
     char op;
 };
 
+bool check_equals(Expression const *left, Expression const *right)
+{
+    // put your code here
+    cout << *((int **)left) << endl;
+    cout << *((int **)right) << endl;
+
+    return *((int **)left) == *((int **)right) ? true : false;
+}
+
 int main()
 {
 
     Expression *sube = new BinaryOperation(new Number(4.5), '*', new Number(5));
     Expression *expr = new BinaryOperation(new Number(3), '+', sube);
 
+    Expression *exp1 = new Number(5);
+    Expression *exp2 = new Number(7);
+
     cout << expr->evaluate() << endl;
+
+    check_equals(exp1, expr);
 
     return 0;
 }
