@@ -129,16 +129,16 @@ struct String
 int main()
 {
 
-    char *str1 = getline();
+    /* char *str1 = getline();
     String w = "world";
     String s1(str1);
     String s2 = s1;
     s2.append(w);
     s1 = s2;
-
+ */
     //s1.append(s1);
 
-    cout << s1.str << endl;
+    //cout << s1.str << endl;
 
     return 0;
 }
