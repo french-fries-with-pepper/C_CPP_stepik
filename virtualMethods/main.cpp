@@ -1,10 +1,19 @@
 #include <iostream>
 using namespace std;
 
+struct Number;
+struct BinaryOperation;
+
+struct Visitor {
+    virtual void visitNumber(Number const * number) = 0;
+    virtual void visitBinaryOperation(BinaryOperation const * binary) = 0;
+    virtual ~Visitor() { }
+};
+
 struct Expression
 {
     virtual double evaluate() const = 0;
-
+    virtual void visit(Visitor * visitor) const  = 0;
     virtual ~Expression(){};
 };
 
@@ -15,6 +24,9 @@ struct Number : Expression
     {
     }
 
+    void visit(Visitor * visitor) const { visitor->visitNumber(this); }
+
+    double get_value() const { return value; }
     double evaluate() const
     {
         return value;
@@ -26,14 +38,18 @@ private:
 
 struct BinaryOperation : Expression
 {
-    /*
-      Здесь op это один из 4 символов: '+', '-', '*' или '/', соответствующих операциям,
-      которые вам нужно реализовать.
-     */
+    
     BinaryOperation(Expression const *left, char op, Expression const *right)
         : left(left), op(op), right(right)
     {
     }
+
+    void visit(Visitor * visitor) const { visitor->visitBinaryOperation(this); }
+
+
+    Expression const * get_left()  const { return left; }
+    Expression const * get_right() const { return right; }
+    char get_op() const { return op; }
 
     double evaluate() const
     {
@@ -48,8 +64,10 @@ struct BinaryOperation : Expression
             return left->evaluate() * right->evaluate();
         case '/':
             return left->evaluate() / right->evaluate();
+        default :
+            return 0;
         }
-    }
+    };
 
     ~BinaryOperation()
     {
@@ -63,11 +81,26 @@ private:
     char op;
 };
 
+struct PrintBinaryOperationsVisitor : Visitor {
+    void visitNumber(Number const * number)
+    { std::cout << '(' << number->evaluate() << ')'; }
+
+    void visitBinaryOperation(BinaryOperation const * bop)
+    {   
+        std::cout << '(';
+        bop->get_left()->visit(this);
+        std::cout << bop->get_op() << " ";
+        bop->get_right()->visit(this);
+        std::cout << ')';
+
+    }
+};
+
 bool check_equals(Expression const *left, Expression const *right)
 {
     // put your code here
-    cout << *((int **)left) << endl;
-    cout << *((int **)right) << endl;
+   // cout << *((int **)left) << endl;
+   // cout << *((int **)right) << endl;
 
     return *((int **)left) == *((int **)right) ? true : false;
 }
@@ -84,6 +117,9 @@ int main()
     cout << expr->evaluate() << endl;
 
     check_equals(exp1, expr);
+
+    PrintBinaryOperationsVisitor visitor;
+    expr->visit(&visitor);
 
     return 0;
 }
