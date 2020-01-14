@@ -83,7 +83,15 @@ private:
 
 struct ScopedPtr
 {
-    
+    // реализуйте следующие методы:
+    //
+    // explicit ScopedPtr(Expression *ptr = 0)
+    // ~ScopedPtr()
+    // Expression* get() const
+    // Expression* release()
+    // void reset(Expression *ptr = 0)
+    // Expression& operator*() const
+    // Expression* operator->() const
 
     //constructor
     explicit ScopedPtr(Expression *ptr = 0)
@@ -124,84 +132,6 @@ private:
     ScopedPtr& operator=(const ScopedPtr&);
 
     Expression *ptr_;
-    
-};
-
-
-struct SharedPtr
-{
-    // реализуйте следующие методы
-    //
-    // explicit SharedPtr(Expression *ptr = 0)
-    // ~SharedPtr()
-    // SharedPtr(const SharedPtr &)
-    // SharedPtr& operator=(const SharedPtr &)
-    // Expression* get() const
-    // void reset(Expression *ptr = 0)
-    // Expression& operator*() const
-    // Expression* operator->() const
-
-    explicit SharedPtr(Expression *ptr = 0)
-    : ptr_(ptr) ,c_(0)
-    {
-        if(ptr_){
-            c_ = new size_t(1);
-        }
-    }
-
-    ~SharedPtr(){
-        if(--*c_==0){
-            delete ptr_;
-            delete c_;
-        }
-    }
-
-    SharedPtr(const SharedPtr & ptr)
-    : ptr_(ptr.ptr_), c_(ptr.c_) {
-        if(c_){
-            ++*c_;
-        }
-    }
-
-    SharedPtr &operator=(const SharedPtr &ptr){
-        if(this!=&ptr){
-            if(--*c_==0){
-                delete ptr_;
-                delete c_;
-            }
-            ptr_=ptr.ptr_;
-            c_=ptr.c_;
-            ++*c_;
-        }
-        return *this;
-    }
-
-    Expression* get() const{
-        return ptr_;
-    }
-
-    void reset(Expression *ptr = 0){
-        if(--*c_==0){
-                delete ptr_;
-                delete c_;
-        }
-        ptr_ = ptr;
-        c_ = new size_t(1);
-
-    }
-
-    Expression& operator*() const{
-        return *ptr_;
-    }
-
-    Expression* operator->() const{
-        return ptr_;
-    }
-
-    private:
-    // запрещаем копирование ScopedPtr
-    Expression *ptr_;
-    size_t *c_;
 };
 
 struct PrintBinaryOperationsVisitor : Visitor {
@@ -243,11 +173,6 @@ int main()
 
     PrintBinaryOperationsVisitor visitor;
     expr->visit(&visitor);
-
-    SharedPtr p2(exp1);
-    SharedPtr p3(expr);
-    
-    SharedPtr p4(p2);
 
     return 0;
 }
