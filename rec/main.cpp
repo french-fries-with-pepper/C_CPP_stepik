@@ -2,27 +2,23 @@
 
 using namespace std;
 
-void strange (int a){
-    if (a==0){
-        return ;
-    } else {
-                int b=0;
-        cin >> b;
-         strange(b);
+int main()
+{
+    int a = 27;
+    int const b = 412;
+    int *pa = &a;
 
-        cout << a << " ";
-        return ;
-    }
-}
+    int const c = a;
 
-int main(){
+    int d = b;
 
+    int const *p1 = pa;
 
-    int a =0;
-    cin >> a;
+    int *const *p2 = &pa;
 
-    strange(a);
-        cout << '\n';
+    int const **p3 = const_cast<int const **>(&pa);
+
+    int const *const *p4 = &pa;
 
     return 0;
 }
