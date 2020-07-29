@@ -1,49 +1,52 @@
 #include <iostream>
+
 using namespace std;
+/*
+ * Create classes Rectangle and RectangleArea
+ */
+class Rectangle{
+    protected:
+    int width;
+    int height;
 
-struct Cls
-{
-    Cls(char c, double d, int i);
-
-private:
-    char c;
-    double d;
-    int i;
+    public:
+    void display(){
+        cout << width << " " << height << endl;
+    }
 };
 
-struct Cls_public
-{
-    Cls_public(char c, double d, int i);
-
-public:
-    char c;
-    double d;
-    int i;
+class RectangleArea : public Rectangle{
+    public:
+    void read_input(){
+        cin>> width >> height;
+    }
+    void display(){
+        cout << width*height;
+    }
 };
 
-char &get_c(Cls &cls)
-{
-    // void *voidptr = static_cast<void *>(&cls);           /*Преобразуем указатель типа Сls* к типу void*. Как бы между делом замечаем поразительное внешнее сходство с непутевым братом.*/
-    // struct ClsPubl *p = static_cast<ClsPubl *>(voidptr); /*Преобразуем указатель типа void* к типу ClsPubl*, чтобы получить доступ к полям и методам. Далее говорим, что у нас таки есть свидетель, опознавший вашего брата (блеф, но иначе никак)! Но может это были вы? Что будет если вас посадят вместо него за его преступление? Как потом жить вашей семье? Ведь у них все отнимут в качестве компенсации!*/
-    // return p->c;
-}
-
-double &get_d(Cls &cls)
-{
-    /* ... */
-}
-
-int &get_i(Cls &cls)
-{
-    /* ... */
-}
 
 int main()
 {
-    Cls obj(99, 0.2, 3);
-
-    struct ClsPubl *p = static_cast<ClsPubl *>(static_cast<void *>((&obj)));
-    cout << p->c << " " << p->d << " " << p->i;
-
+    /*
+     * Declare a RectangleArea object
+     */
+    RectangleArea r_area;
+    
+    /*
+     * Read the width and height
+     */
+    r_area.read_input();
+    
+    /*
+     * Print the width and height
+     */
+    r_area.Rectangle::display();
+    
+    /*
+     * Print the area
+     */
+    r_area.display();
+    
     return 0;
 }

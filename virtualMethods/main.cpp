@@ -150,7 +150,7 @@ struct SharedPtr
     }
 
     ~SharedPtr(){
-        if(--*c_==0){
+        if(--*c_== 0){
             delete ptr_;
             delete c_;
         }
@@ -199,7 +199,6 @@ struct SharedPtr
     }
 
     private:
-    // запрещаем копирование ScopedPtr
     Expression *ptr_;
     size_t *c_;
 };
